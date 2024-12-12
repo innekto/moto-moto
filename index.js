@@ -28,7 +28,7 @@ import { launch } from 'puppeteer';
       if (isMoreButtonVisible) {
         await page.click('a.seomore_a');
         console.log('Кнопка натиснута, очікуємо...');
-        await new Promise((resolve) => setTimeout(resolve, 5000)); // Заміна на setTimeout
+        await new Promise((resolve) => setTimeout(resolve, 5000));
       }
     } catch (error) {
       console.error('Помилка при перевірці/натисканні кнопки:', error);
