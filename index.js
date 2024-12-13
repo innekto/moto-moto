@@ -28,7 +28,7 @@ import { launch } from 'puppeteer';
       if (isMoreButtonVisible) {
         await page.click('a.seomore_a');
         console.log('Кнопка натиснута, очікуємо...');
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await new Promise((resolve) => setTimeout(resolve, 7000));
       }
     } catch (error) {
       console.error('Помилка при перевірці/натисканні кнопки:', error);
@@ -40,7 +40,14 @@ import { launch } from 'puppeteer';
 
   const results = await page.evaluate(() => {
     const items = document.querySelectorAll('li.product');
-    return items.length;
+
+    const result = Array.from(items).map((i) => {
+      const title = i.querySelector('p.product__name').innerText;
+
+      const products = { title };
+      return products;
+    });
+    return result;
   });
   console.log(results);
 
