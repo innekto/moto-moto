@@ -20,15 +20,25 @@ import { launch } from 'puppeteer';
 
   while (isMoreButtonVisible) {
     try {
+      // Перевірка наявності кнопки "Показати більше"
       isMoreButtonVisible = await page.evaluate(() => {
         const button = document.querySelector('a.seomore_a');
         return !!button;
       });
 
       if (isMoreButtonVisible) {
+        // Натискаємо кнопку
         await page.click('a.seomore_a');
         console.log('Кнопка натиснута, очікуємо...');
+
+        // Очікуємо підвантаження нових елементів
         await new Promise((resolve) => setTimeout(resolve, 7000));
+
+        // Логування кількості підвантажених товарів
+        const itemCount = await page.evaluate(() => {
+          return document.querySelectorAll('li.product').length;
+        });
+        console.log(`Кількість підвантажених товарів: ${itemCount}`);
       }
     } catch (error) {
       console.error('Помилка при перевірці/натисканні кнопки:', error);
@@ -38,6 +48,7 @@ import { launch } from 'puppeteer';
 
   console.log('Усі товари підвантажено.');
 
+  // Отримання результатів
   const results = await page.evaluate(() => {
     const items = document.querySelectorAll('li.product');
 
@@ -49,6 +60,7 @@ import { launch } from 'puppeteer';
     });
     return result;
   });
+
   console.log(results);
 
   await browser.close();
